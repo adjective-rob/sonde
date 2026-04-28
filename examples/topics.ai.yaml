@@ -1,0 +1,149 @@
+topics:
+  - id: "agent_security_model"
+    name: "Agent Security Model"
+    description: "Security models, permissions, identity, and threat models for AI agents."
+    intent: "Track emerging work on identity, permissioning, isolation, and threat models for AI agents."
+    status: "active"
+    priority: "high"
+    version: "1.0.0"
+    owner: "adjective"
+    queries:
+      - "agent security model"
+      - "AI agent permissioning"
+      - "agent identity authorization"
+    aliases:
+      - "secure AI agents"
+      - "agentic security"
+    negative_terms:
+      - "real estate agent"
+      - "insurance agent"
+    tags:
+      - "ai"
+      - "agents"
+      - "security"
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+        include:
+          paths:
+            - "examples/fixtures/local_records.jsonl"
+      - id: "github"
+        enabled: true
+        max_results: 20
+      - id: "arxiv"
+        enabled: true
+        max_results: 20
+    schedule:
+      interval_minutes: 120
+    scoring:
+      velocity_threshold: 3.0
+      relevance_threshold: 0.70
+      novelty_threshold: 0.35
+    governance:
+      created_at: "2026-04-28"
+      last_reviewed_at: "2026-04-28"
+      review_cycle_days: 30
+      reviewers: []
+    lineage:
+      retain_config_hash: true
+      retain_source_response_hash: true
+
+  - id: "model_context_protocol"
+    name: "Model Context Protocol"
+    description: "MCP servers, clients, tools, resources, prompts, and agent integrations."
+    intent: "Track MCP ecosystem evolution across tools, SDKs, servers, and security patterns."
+    status: "active"
+    priority: "high"
+    version: "1.0.0"
+    owner: "adjective"
+    queries:
+      - "model context protocol"
+      - "MCP server tools resources prompts"
+      - "MCP agent integration"
+    aliases:
+      - "MCP"
+      - "model context protocol server"
+    negative_terms:
+      - "multiple comparisons procedure"
+      - "master control program"
+    tags:
+      - "ai"
+      - "mcp"
+      - "agents"
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+        include:
+          paths:
+            - "examples/fixtures/local_records.jsonl"
+      - id: "github"
+        enabled: true
+        max_results: 20
+      - id: "arxiv"
+        enabled: true
+        max_results: 20
+    schedule:
+      interval_minutes: 120
+    scoring:
+      velocity_threshold: 3.0
+      relevance_threshold: 0.70
+      novelty_threshold: 0.35
+    governance:
+      created_at: "2026-04-28"
+      last_reviewed_at: "2026-04-28"
+      review_cycle_days: 30
+      reviewers: []
+    lineage:
+      retain_config_hash: true
+      retain_source_response_hash: true
+
+  - id: "llm_observability_tracing"
+    name: "LLM Observability and Tracing"
+    intent: "Track observability, tracing, evals, and monitoring patterns for LLM systems."
+    status: "draft"
+    priority: "medium"
+    version: "1.0.0"
+    owner: "adjective"
+    queries:
+      - "LLM observability tracing"
+      - "agent tracing OpenTelemetry"
+    aliases:
+      - "LLM monitoring"
+    negative_terms:
+      - "call center agent"
+    tags:
+      - "ai"
+      - "observability"
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+    schedule:
+      interval_minutes: 240
+
+  - id: "confidential_computing_llm_inference"
+    name: "Confidential Computing LLM Inference"
+    intent: "Track TEEs, confidential computing, and verifiable execution for LLM inference."
+    status: "draft"
+    priority: "medium"
+    version: "1.0.0"
+    owner: "adjective"
+    queries:
+      - "confidential computing LLM inference"
+      - "TEE AI inference"
+    aliases:
+      - "private LLM inference"
+    negative_terms:
+      - "medical inference"
+    tags:
+      - "ai"
+      - "security"
+      - "privacy"
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+    schedule:
+      interval_minutes: 1440

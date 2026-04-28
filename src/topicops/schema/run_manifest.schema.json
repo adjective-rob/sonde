@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"TopicOps Run Manifest","type":"object","required":["run","topics","adapter_versions","artifacts_written","raw_records_written"]}

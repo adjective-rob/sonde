@@ -1,0 +1,11 @@
+sources:
+  - id: "local_jsonl"
+    name: "Local JSONL Fixtures"
+  - id: "github"
+    name: "GitHub repository search"
+  - id: "arxiv"
+    name: "arXiv API"
+  - id: "huggingface"
+    name: "Hugging Face Hub"
+  - id: "rss"
+    name: "RSS feeds"

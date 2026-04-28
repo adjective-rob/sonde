@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"TopicOps Topic","type":"object","required":["id","name","intent","version","queries","sources","schedule"],"properties":{"id":{"type":"string"},"name":{"type":"string"},"intent":{"type":"string"},"version":{"type":"string"},"queries":{"type":"array","items":{"type":"string"}},"sources":{"type":"array"}}}

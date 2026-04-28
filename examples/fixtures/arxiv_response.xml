@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>http://arxiv.org/abs/2604.00001v1</id>
+    <title>Agent Security Models for Tool Use</title>
+    <summary>We study identity and permissioning for AI agents.</summary>
+    <published>2026-04-20T00:00:00Z</published>
+    <updated>2026-04-21T00:00:00Z</updated>
+    <author><name>Ada Example</name></author>
+  </entry>
+</feed>

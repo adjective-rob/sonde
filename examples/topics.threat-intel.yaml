@@ -1,0 +1,17 @@
+topics:
+  - id: "vulnerability_intelligence_feeds"
+    name: "Vulnerability Intelligence Feeds"
+    intent: "Track public vulnerability intelligence feeds and tooling."
+    status: "draft"
+    priority: "high"
+    version: "1.0.0"
+    owner: "adjective"
+    queries: ["vulnerability intelligence feed"]
+    negative_terms: ["exploit bypass"]
+    tags: ["threat-intel"]
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+    schedule:
+      interval_minutes: 720

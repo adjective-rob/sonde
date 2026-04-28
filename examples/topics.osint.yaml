@@ -1,0 +1,17 @@
+topics:
+  - id: "public_web_osint_tooling"
+    name: "Public Web OSINT Tooling"
+    intent: "Track open-source OSINT tools that use public APIs and feeds."
+    status: "draft"
+    priority: "medium"
+    version: "1.0.0"
+    owner: "adjective"
+    queries: ["open source OSINT tooling"]
+    negative_terms: ["credential stuffing", "bypass"]
+    tags: ["osint"]
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+    schedule:
+      interval_minutes: 1440

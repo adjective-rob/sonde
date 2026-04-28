@@ -1,0 +1,17 @@
+topics:
+  - id: "scientific_literature_monitoring"
+    name: "Scientific Literature Monitoring"
+    intent: "Track tooling and workflows for monitoring scientific literature."
+    status: "draft"
+    priority: "medium"
+    version: "1.0.0"
+    owner: "adjective"
+    queries: ["scientific literature monitoring"]
+    negative_terms: ["piracy"]
+    tags: ["science"]
+    sources:
+      - id: "local_jsonl"
+        enabled: true
+        max_results: 10
+    schedule:
+      interval_minutes: 1440
