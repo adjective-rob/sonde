@@ -1,0 +1,1 @@
+Review all topics and identify candidates for deprecation. Consider: low yield over recent runs, high noise ratio, semantic overlap with other topics, stale queries that no longer match current terminology, and topics that have not been reviewed within their governance cycle. For each candidate, explain the reason and suggest whether to deprecate, merge, or revise.

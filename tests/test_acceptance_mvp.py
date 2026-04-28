@@ -43,4 +43,4 @@ def test_acceptance_mvp(runner, examples_path, monkeypatch, tmp_path) -> None:
     assert "adapter_versions" in text
     assert "artifact_count" in text
     assert "sonde://topics" in list_resource_templates()
-    assert "run_topic" in list_tools()
+    assert "run_topic_dry_run" in list_tools()
