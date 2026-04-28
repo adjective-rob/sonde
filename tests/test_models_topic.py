@@ -1,7 +1,7 @@
 import pytest
 
-from topicops.models.source import TopicSourceConfig
-from topicops.models.topic import ScheduleConfig, Topic
+from sonde.models.source import TopicSourceConfig
+from sonde.models.topic import ScheduleConfig, Topic
 
 
 def test_topic_validates() -> None:

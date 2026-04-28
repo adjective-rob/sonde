@@ -1,5 +1,5 @@
-from topicops.engine.diff import diff_topics
-from topicops.engine.loader import load_topics
+from sonde.engine.diff import diff_topics
+from sonde.engine.loader import load_topics
 
 
 def test_diff_same_empty(examples_path) -> None:

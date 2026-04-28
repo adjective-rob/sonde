@@ -1,4 +1,4 @@
-from topicops.cli import app
+from sonde.cli import app
 
 
 def test_cli_version(runner) -> None:

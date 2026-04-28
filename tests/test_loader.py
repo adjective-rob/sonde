@@ -1,4 +1,4 @@
-from topicops.engine.loader import load_topics
+from sonde.engine.loader import load_topics
 
 
 def test_load_topics(examples_path) -> None:

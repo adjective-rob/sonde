@@ -1,6 +1,6 @@
-# TopicOps SPEC
+# Sonde SPEC
 
-This repository implements TopicOps: an open-source control plane for declaring,
+This repository implements Sonde: an open-source control plane for declaring,
 validating, simulating, running, and governing collection intent across
 scrapers, OSINT workflows, feeds, research monitors, and agent-accessible
 intelligence systems.

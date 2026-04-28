@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Sonde Artifact","type":"object","required":["id","source","title","collected_at","normalized_hash","topic_id","topic_version","config_hash","run_id"]}

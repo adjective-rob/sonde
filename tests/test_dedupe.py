@@ -1,5 +1,5 @@
-from topicops.engine.dedupe import dedupe_topics
-from topicops.engine.loader import load_topics
+from sonde.engine.dedupe import dedupe_topics
+from sonde.engine.loader import load_topics
 
 
 def test_dedupe_no_hard_duplicates(examples_path) -> None:

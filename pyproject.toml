@@ -1,11 +1,11 @@
 [project]
-name = "topicops"
+name = "sonde"
 version = "0.1.0"
 description = "Open-source control plane for collection intent across scrapers, OSINT workflows, feeds, and agent-accessible intelligence systems."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [{ name = "TopicOps contributors" }]
+authors = [{ name = "Sonde contributors" }]
 dependencies = [
   "typer>=0.12.0",
   "pydantic>=2.7.0",
@@ -35,7 +35,7 @@ dev = [
 ]
 
 [project.scripts]
-topicops = "topicops.cli:app"
+sonde = "sonde.cli:app"
 
 [build-system]
 requires = ["hatchling"]

@@ -1,8 +1,8 @@
 from datetime import UTC, datetime
 
-from topicops.adapters.arxiv import ArxivAdapter
-from topicops.adapters.base import RawSourceRecord
-from topicops.engine.loader import load_topics
+from sonde.adapters.arxiv import ArxivAdapter
+from sonde.adapters.base import RawSourceRecord
+from sonde.engine.loader import load_topics
 
 
 def test_arxiv_normalize(examples_path) -> None:

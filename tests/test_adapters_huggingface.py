@@ -1,8 +1,8 @@
 from datetime import UTC, datetime
 
-from topicops.adapters.base import RawSourceRecord
-from topicops.adapters.huggingface import HuggingFaceAdapter
-from topicops.engine.loader import load_topics
+from sonde.adapters.base import RawSourceRecord
+from sonde.adapters.huggingface import HuggingFaceAdapter
+from sonde.engine.loader import load_topics
 
 
 def test_huggingface_normalize(examples_path) -> None:

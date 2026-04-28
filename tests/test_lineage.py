@@ -1,4 +1,4 @@
-from topicops.engine.lineage import hash_canonical, normalize_text, slugify_topic_id
+from sonde.engine.lineage import hash_canonical, normalize_text, slugify_topic_id
 
 
 def test_hash_stable() -> None:

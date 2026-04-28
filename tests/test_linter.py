@@ -1,4 +1,4 @@
-from topicops.engine.linter import lint_config
+from sonde.engine.linter import lint_config
 
 
 def test_lint_examples_passes(examples_path) -> None:

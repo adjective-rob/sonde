@@ -5,8 +5,8 @@ to a remote.
 
 1. Create core Pydantic topic schema
 2. Implement YAML loader and schema validation
-3. Implement `topicops lint`
-4. Implement `topicops dedupe`
+3. Implement `sonde lint`
+4. Implement `sonde dedupe`
 5. Implement SQLite registry and run manifests
 6. Implement local JSONL adapter
 7. Implement GitHub, arXiv, Hugging Face, and RSS adapters

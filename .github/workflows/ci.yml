@@ -13,4 +13,4 @@ jobs:
       - run: uv sync --all-extras
       - run: uv run ruff check .
       - run: uv run mypy src
-      - run: uv run pytest --cov=topicops
+      - run: uv run pytest --cov=sonde

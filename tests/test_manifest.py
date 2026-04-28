@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 
-from topicops.models.run import CollectionRun, RunManifest, RunStatus
-from topicops.models.topic import TopicSnapshot
+from sonde.models.run import CollectionRun, RunManifest, RunStatus
+from sonde.models.topic import TopicSnapshot
 
 
 def test_manifest_model() -> None:

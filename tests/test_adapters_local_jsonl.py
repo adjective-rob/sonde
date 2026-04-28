@@ -1,7 +1,7 @@
 import asyncio
 
-from topicops.adapters.local_jsonl import LocalJsonlAdapter
-from topicops.engine.loader import load_topics
+from sonde.adapters.local_jsonl import LocalJsonlAdapter
+from sonde.engine.loader import load_topics
 
 
 def test_local_jsonl_adapter(examples_path) -> None:

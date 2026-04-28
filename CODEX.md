@@ -5,7 +5,7 @@ receive the same project guidance.
 
 ## Project Intent
 
-TopicOps is a local-first Python control plane for declaring, validating,
+Sonde is a local-first Python control plane for declaring, validating,
 simulating, running, and governing collection intent. The core artifact is a
 versioned topic pack that describes what to watch, where to collect from, how to
 score results, and how to preserve lineage.
@@ -26,11 +26,11 @@ score results, and how to preserve lineage.
 
 ```bash
 uv sync --all-extras
-uv run topicops version
-uv run topicops lint examples/topics.ai.yaml
-uv run topicops dedupe examples/topics.ai.yaml --near
-uv run topicops simulate examples/topics.ai.yaml --topic agent_security_model --source local_jsonl
-uv run topicops run examples/topics.ai.yaml --topic agent_security_model --source local_jsonl --dry-run
+uv run sonde version
+uv run sonde lint examples/topics.ai.yaml
+uv run sonde dedupe examples/topics.ai.yaml --near
+uv run sonde simulate examples/topics.ai.yaml --topic agent_security_model --source local_jsonl
+uv run sonde run examples/topics.ai.yaml --topic agent_security_model --source local_jsonl --dry-run
 uv run pytest
 uv run ruff check .
 uv run mypy src

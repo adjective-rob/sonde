@@ -1,8 +1,8 @@
 from datetime import UTC, datetime
 
-from topicops.adapters.base import RawSourceRecord
-from topicops.adapters.github import GitHubAdapter
-from topicops.engine.loader import load_topics
+from sonde.adapters.base import RawSourceRecord
+from sonde.adapters.github import GitHubAdapter
+from sonde.engine.loader import load_topics
 
 
 def test_github_normalize(examples_path) -> None:

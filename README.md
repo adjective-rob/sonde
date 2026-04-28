@@ -1,6 +1,6 @@
-# TopicOps
+# Sonde
 
-TopicOps is an open-source control plane for collection intent across scrapers,
+Sonde is an open-source control plane for collection intent across scrapers,
 OSINT workflows, feeds, research monitors, and agent-accessible intelligence
 systems.
 
@@ -11,7 +11,7 @@ inspectable, and agent-operable.
 ## Why Collection Intent Matters
 
 Most collection systems hide their actual intent in scattered YAML, scripts,
-seed URLs, RSS lists, API queries, and watchlists. TopicOps turns that hidden
+seed URLs, RSS lists, API queries, and watchlists. Sonde turns that hidden
 layer into a governed topic pack that can live in Git and produce reproducible
 run manifests.
 
@@ -32,12 +32,12 @@ uv sync --all-extras
 ## Quickstart
 
 ```bash
-uv run topicops init
-uv run topicops lint examples/topics.ai.yaml
-uv run topicops dedupe examples/topics.ai.yaml --near
-uv run topicops simulate examples/topics.ai.yaml --topic agent_security_model --source local_jsonl
-uv run topicops run examples/topics.ai.yaml --topic agent_security_model --source local_jsonl --dry-run
-uv run topicops mcp --config examples/topics.ai.yaml --summary
+uv run sonde init
+uv run sonde lint examples/topics.ai.yaml
+uv run sonde dedupe examples/topics.ai.yaml --near
+uv run sonde simulate examples/topics.ai.yaml --topic agent_security_model --source local_jsonl
+uv run sonde run examples/topics.ai.yaml --topic agent_security_model --source local_jsonl --dry-run
+uv run sonde mcp --config examples/topics.ai.yaml --summary
 ```
 
 ## Example Topic
@@ -68,16 +68,16 @@ topics:
 ## CLI
 
 ```bash
-topicops init
-topicops lint <config> [--json] [--strict]
-topicops dedupe <config> [--near] [--json]
-topicops diff <old_config> <new_config> [--json]
-topicops simulate <config> --topic <id> --source <source> [--json]
-topicops run <config> --topic <id> [--source <source>] [--dry-run] [--json]
-topicops status [--json]
-topicops export <config> --tag agents --output exports/agents.topicpack.yaml
-topicops mcp --config <config>
-topicops version
+sonde init
+sonde lint <config> [--json] [--strict]
+sonde dedupe <config> [--near] [--json]
+sonde diff <old_config> <new_config> [--json]
+sonde simulate <config> --topic <id> --source <source> [--json]
+sonde run <config> --topic <id> [--source <source>] [--dry-run] [--json]
+sonde status [--json]
+sonde export <config> --tag agents --output exports/agents.topicpack.yaml
+sonde mcp --config <config>
+sonde version
 ```
 
 ## MCP Usage
@@ -85,13 +85,13 @@ topicops version
 Start a server:
 
 ```bash
-uv run topicops mcp --config examples/topics.ai.yaml
+uv run sonde mcp --config examples/topics.ai.yaml
 ```
 
 Inspect the registered surface without starting stdio MCP:
 
 ```bash
-uv run topicops mcp --config examples/topics.ai.yaml --summary
+uv run sonde mcp --config examples/topics.ai.yaml --summary
 ```
 
 The MCP layer exposes topic resources, schemas, prompts, and tools for linting,
@@ -108,9 +108,9 @@ cost estimates. MCP `run_topic` defaults to `dry_run: true`.
 
 ## Lineage
 
-Runs create manifests under `.topicops/artifacts/manifests/`. The registry is a
-local SQLite database at `.topicops/topicops.db` by default. Normalized artifacts
-are appended to `.topicops/artifacts/normalized/artifacts.jsonl` for non-dry
+Runs create manifests under `.sonde/artifacts/manifests/`. The registry is a
+local SQLite database at `.sonde/sonde.db` by default. Normalized artifacts
+are appended to `.sonde/artifacts/normalized/artifacts.jsonl` for non-dry
 runs.
 
 ## Safety Policy
@@ -140,5 +140,5 @@ Run the checks before opening a PR:
 ```bash
 uv run ruff check .
 uv run mypy src
-uv run pytest --cov=topicops
+uv run pytest --cov=sonde
 ```
