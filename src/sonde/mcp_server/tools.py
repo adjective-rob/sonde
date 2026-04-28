@@ -220,7 +220,7 @@ def rollback_topic_version(
 
 def generate_aliases(topic_id: str, intent: str, queries: list[str]) -> dict[str, Any]:
     """Generate query aliases from intent and existing queries."""
-    words = set()
+    words: set[str] = set()
     for text in [intent, *queries]:
         cleaned = text.replace(",", "").replace(".", "").split()
         words.update(w.lower() for w in cleaned if len(w) > 3)
@@ -263,7 +263,7 @@ def generate_negative_terms(
         "token": ["token gesture", "token economy"],
     }
 
-    query_words = set()
+    query_words: set[str] = set()
     for q in queries:
         query_words.update(w.lower() for w in q.split())
 

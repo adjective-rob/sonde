@@ -103,24 +103,24 @@ def run_mcp_server(config_path: str) -> None:
     # ------------------------------------------------------------------
 
     @mcp.tool()
-    def tool_lint_topics(config_path: str = config_path) -> dict:
+    def tool_lint_topics(config_path: str = config_path) -> dict[str, object]:
         """Validate a topic config file. Returns errors, warnings, and topic count."""
         return lint_topics(config_path)
 
     @mcp.tool()
     def tool_dedupe_topics(
         config_path: str = config_path, include_near: bool = True
-    ) -> dict:
+    ) -> dict[str, object]:
         """Find duplicate and overlapping topics in a config."""
         return dedupe_topics_tool(config_path, include_near_overlaps=include_near)
 
     @mcp.tool()
-    def tool_find_semantic_overlap(config_path: str = config_path) -> dict:
+    def tool_find_semantic_overlap(config_path: str = config_path) -> dict[str, object]:
         """Detect semantic overlap between all topics using fuzzy matching."""
         return find_semantic_overlap(config_path)
 
     @mcp.tool()
-    def tool_diff_topics(old_config: str, new_config: str) -> dict:
+    def tool_diff_topics(old_config: str, new_config: str) -> dict[str, object]:
         """Compare two topic config files and show added, removed, changed topics."""
         return diff_topics_tool(old_config, new_config)
 
@@ -128,14 +128,14 @@ def run_mcp_server(config_path: str) -> None:
     def tool_simulate_topic(
         topic_id: str, source: str = "local_jsonl", limit: int = 20,
         config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Sample expected yield and noise for a topic from a source."""
         return simulate_topic_tool(config_path, topic_id, source, limit=limit)
 
     @mcp.tool()
     def tool_estimate_collection_cost(
         topic_id: str, interval_hours: int = 24, config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Estimate API requests, artifacts, and storage cost for a topic."""
         return estimate_collection_cost(config_path, topic_id, interval_hours=interval_hours)
 
@@ -144,7 +144,7 @@ def run_mcp_server(config_path: str) -> None:
         topic_id: str,
         sources: list[str] | None = None,
         config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Execute a dry run for a topic. Safe — never writes artifacts."""
         return run_topic_dry_run(config_path, topic_id, sources=sources)
 
@@ -156,14 +156,14 @@ def run_mcp_server(config_path: str) -> None:
         queries: list[str],
         sources: list[str],
         config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Create a new draft topic. Returns proposed diff — does not write to file."""
         return create_topic_draft(config_path, id, name, intent, queries, sources)
 
     @mcp.tool()
     def tool_update_topic_draft(
-        topic_id: str, patch: dict, config_path: str = config_path,
-    ) -> dict:
+        topic_id: str, patch: dict[str, object], config_path: str = config_path,
+    ) -> dict[str, object]:
         """Modify a topic. Returns proposed diff — does not write to file."""
         return update_topic_draft(config_path, topic_id, patch)
 
@@ -173,42 +173,42 @@ def run_mcp_server(config_path: str) -> None:
         reason: str,
         replacement_id: str | None = None,
         config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Deprecate a topic with a reason. Returns proposed diff."""
         return deprecate_topic(config_path, topic_id, reason, replacement_id=replacement_id)
 
     @mcp.tool()
     def tool_promote_topic(
         topic_id: str, owner: str | None = None, config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Promote a draft or paused topic to active. Returns proposed diff."""
         return promote_topic(config_path, topic_id, owner=owner)
 
     @mcp.tool()
     def tool_rollback_topic_version(
         topic_id: str, target_version: str, config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Roll back a topic to a previous version from the registry."""
         return rollback_topic_version(config_path, topic_id, target_version)
 
     @mcp.tool()
     def tool_generate_aliases(
         topic_id: str, intent: str, queries: list[str],
-    ) -> dict:
+    ) -> dict[str, object]:
         """Generate query aliases and tags from a topic's intent and queries."""
         return generate_aliases(topic_id, intent, queries)
 
     @mcp.tool()
     def tool_generate_negative_terms(
         topic_id: str, intent: str, queries: list[str],
-    ) -> dict:
+    ) -> dict[str, object]:
         """Generate negative terms to reduce noise for a topic."""
         return generate_negative_terms(topic_id, intent, queries)
 
     @mcp.tool()
     def tool_summarize_topic_health(
         topic_id: str, config_path: str = config_path,
-    ) -> dict:
+    ) -> dict[str, object]:
         """Health report: yield, noise, staleness, source coverage for a topic."""
         return summarize_topic_health(config_path, topic_id)
 
