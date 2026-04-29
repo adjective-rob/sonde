@@ -23,6 +23,8 @@ def run_mcp_server(config_path: str) -> None:
     from sonde.mcp_server.prompts import read_prompt
     from sonde.mcp_server.resources import read_resource
     from sonde.mcp_server.tools import (
+        apply_diff,
+        artifact_memory,
         create_topic_draft,
         dedupe_topics_tool,
         deprecate_topic,
@@ -211,6 +213,18 @@ def run_mcp_server(config_path: str) -> None:
     ) -> dict[str, object]:
         """Health report: yield, noise, staleness, source coverage for a topic."""
         return summarize_topic_health(config_path, topic_id)
+
+    @mcp.tool()
+    def tool_apply_diff(
+        proposed_yaml: str, config_path: str = config_path,
+    ) -> dict[str, object]:
+        """Apply a previously proposed diff after human review. Validates before writing."""
+        return apply_diff(config_path, proposed_yaml)
+
+    @mcp.tool()
+    def tool_artifact_memory(topic_id: str) -> dict[str, object]:
+        """Return artifact memory stats: unique vs recurring artifacts across runs."""
+        return artifact_memory(topic_id)
 
     # ------------------------------------------------------------------
     # Prompts

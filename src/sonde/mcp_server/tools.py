@@ -33,6 +33,8 @@ EXPECTED_TOOLS = [
     "generate_aliases",
     "generate_negative_terms",
     "summarize_topic_health",
+    "apply_diff",
+    "artifact_memory",
 ]
 
 
@@ -310,6 +312,59 @@ def estimate_collection_cost(
         "storage_estimate_bytes_per_day": sum(daily_artifacts.values()) * 4096,
         "rate_limit_warnings": [],
     }
+
+
+def apply_diff(config_path: str, proposed_yaml: str) -> dict[str, Any]:
+    """Apply a previously proposed diff to the config file.
+
+    This is the human-in-the-loop step: an agent proposes changes via
+    create_topic_draft/update_topic_draft/deprecate_topic/promote_topic,
+    the human reviews the diff, then calls apply_diff to write it.
+    """
+    path = Path(config_path)
+    if not path.exists():
+        return {"error": f"Config file not found: {config_path}"}
+
+    # Validate the proposed YAML before writing
+    try:
+        parsed = yaml.safe_load(proposed_yaml)
+    except yaml.YAMLError as exc:
+        return {"error": f"Invalid YAML: {exc}"}
+
+    if not isinstance(parsed, dict) or "topics" not in parsed:
+        return {"error": "Proposed YAML must contain a 'topics' key"}
+
+    # Validate all topics parse correctly
+    from sonde.models.topic import TopicPack
+
+    try:
+        TopicPack.model_validate(parsed)
+    except Exception as exc:
+        return {"error": f"Proposed topics failed validation: {exc}"}
+
+    original = path.read_text(encoding="utf-8")
+    path.write_text(proposed_yaml, encoding="utf-8")
+    return {
+        "applied": True,
+        "config_path": config_path,
+        "topics_count": len(parsed["topics"]),
+        "diff": "\n".join(
+            difflib.unified_diff(
+                original.splitlines(), proposed_yaml.splitlines(), lineterm=""
+            )
+        ),
+    }
+
+
+def artifact_memory(
+    topic_id: str,
+    db_path: str = ".sonde/sonde.db",
+) -> dict[str, Any]:
+    """Return artifact memory stats — how many unique vs recurring artifacts."""
+    from sonde.registry.repository import RegistryRepository
+
+    repo = RegistryRepository(db_path)
+    return repo.artifact_seen_stats(topic_id)
 
 
 def summarize_topic_health(

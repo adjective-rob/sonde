@@ -16,6 +16,7 @@ from sonde.models.registry import RegistryStats
 from sonde.models.run import CollectionRun, RunError
 from sonde.models.topic import Topic
 from sonde.registry.db import (
+    artifact_seen_table,
     artifacts_table,
     collection_runs_table,
     init_db,
@@ -141,6 +142,97 @@ class RegistryRepository:
                         metadata_json=json.dumps(error.metadata, sort_keys=True),
                     )
                 )
+
+    # ------------------------------------------------------------------
+    # Artifact memory
+    # ------------------------------------------------------------------
+
+    def mark_artifact_seen(
+        self, *, artifact_hash: str, topic_id: str, source: str
+    ) -> dict[str, Any]:
+        """Track artifact across runs. Returns seen_count and first/last seen."""
+        now = datetime.now(UTC)
+        seen_id = hash_canonical(
+            {"artifact_hash": artifact_hash, "topic_id": topic_id, "source": source}
+        )
+        with self.engine.begin() as conn:
+            row = conn.execute(
+                select(
+                    artifact_seen_table.c.seen_count,
+                    artifact_seen_table.c.first_seen_at,
+                )
+                .where(artifact_seen_table.c.id == seen_id)
+            ).first()
+
+            if row:
+                new_count = row[0] + 1
+                conn.execute(
+                    artifact_seen_table.update()
+                    .where(artifact_seen_table.c.id == seen_id)
+                    .values(last_seen_at=now, seen_count=new_count)
+                )
+                return {
+                    "seen_count": new_count,
+                    "first_seen_at": str(row[1]),
+                    "is_new": False,
+                }
+            else:
+                conn.execute(
+                    insert(artifact_seen_table).values(
+                        id=seen_id,
+                        artifact_id=artifact_hash,
+                        topic_id=topic_id,
+                        source=source,
+                        first_seen_at=now,
+                        last_seen_at=now,
+                        seen_count=1,
+                    )
+                )
+                return {"seen_count": 1, "first_seen_at": str(now), "is_new": True}
+
+    def previous_run_artifact_count(self, topic_id: str) -> int:
+        """Return artifact count from the most recent completed run for a topic."""
+        with self.engine.connect() as conn:
+            row = conn.execute(
+                text(
+                    "SELECT artifact_count FROM collection_runs "
+                    "WHERE topic_ids_json LIKE :pattern "
+                    "AND status = 'completed' "
+                    "ORDER BY started_at DESC LIMIT 1"
+                ),
+                {"pattern": f'%"{topic_id}"%'},
+            ).first()
+            return row[0] if row and row[0] else 0
+
+    def artifact_seen_stats(self, topic_id: str) -> dict[str, Any]:
+        """Return artifact memory stats for a topic."""
+        with self.engine.connect() as conn:
+            total = conn.execute(
+                select(func.count()).select_from(artifact_seen_table).where(
+                    artifact_seen_table.c.topic_id == topic_id
+                )
+            ).scalar_one()
+            recurring = conn.execute(
+                select(func.count()).select_from(artifact_seen_table).where(
+                    artifact_seen_table.c.topic_id == topic_id,
+                    artifact_seen_table.c.seen_count > 1,
+                )
+            ).scalar_one()
+            max_seen = conn.execute(
+                select(func.max(artifact_seen_table.c.seen_count)).where(
+                    artifact_seen_table.c.topic_id == topic_id
+                )
+            ).scalar_one()
+            return {
+                "topic_id": topic_id,
+                "total_unique_artifacts": total,
+                "recurring_artifacts": recurring,
+                "new_artifacts": total - recurring,
+                "max_seen_count": max_seen or 0,
+                "novelty_ratio": round(
+                    (total - recurring) / max(total, 1), 3
+                ),
+            }
 
     # ------------------------------------------------------------------
     # Read operations

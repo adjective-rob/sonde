@@ -51,6 +51,8 @@ async def run_topics(
     raw_count = 0
     errors: list[RunError] = []
     adapter_versions: dict[str, str] = {}
+    new_artifact_count = 0
+    recurring_artifact_count = 0
 
     for topic in topics:
         topic_hash = hash_canonical(topic.model_dump(mode="json"))
@@ -71,7 +73,18 @@ async def run_topics(
                 if not dry_run:
                     store.write_raw(run_id, records)
                 for record in records:
-                    all_artifacts.append(adapter.normalize(record, topic, run_id, topic_hash))
+                    artifact = adapter.normalize(record, topic, run_id, topic_hash)
+                    # Track cross-run artifact memory
+                    seen_info = repo.mark_artifact_seen(
+                        artifact_hash=artifact.normalized_hash,
+                        topic_id=topic.id,
+                        source=source_config.id,
+                    )
+                    if seen_info["seen_count"] > 1:
+                        recurring_artifact_count += 1
+                    else:
+                        new_artifact_count += 1
+                    all_artifacts.append(artifact)
             except Exception as exc:
                 errors.append(
                     RunError(
@@ -90,6 +103,10 @@ async def run_topics(
     run.completed_at = datetime.now(UTC)
     run.artifact_count = len(deduped)
     run.error_count = len(errors)
+    run.metadata = {
+        "new_artifacts": new_artifact_count,
+        "recurring_artifacts": recurring_artifact_count,
+    }
     repo.insert_run(run)
     repo.insert_errors(run.id, errors)
     manifest = RunManifest(

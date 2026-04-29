@@ -256,6 +256,71 @@ def mcp(
     run_mcp_server(str(config))
 
 
+@app.command()
+def health(
+    config: Path,
+    topic: Annotated[str, typer.Option("--topic")],
+    json_output: Annotated[bool, typer.Option("--json", help="Print JSON output.")] = False,
+) -> None:
+    """Show health report for a topic: yield, staleness, coverage, memory."""
+    from sonde.mcp_server.tools import artifact_memory, summarize_topic_health
+
+    settings = get_settings()
+    report = summarize_topic_health(
+        str(config), topic, db_path=str(settings.db_path)
+    )
+    memory = artifact_memory(topic, db_path=str(settings.db_path))
+    report["artifact_memory"] = memory
+    if json_output:
+        print_json(report)
+        return
+    console.print(f"Health: {report['topic_id']} ({report['status']} v{report['version']})")
+    console.print(f"  Runs: {report['total_runs']}")
+    console.print(f"  Artifacts: {report['total_artifacts']}")
+    console.print(f"  Errors: {report['total_errors']}")
+    console.print(f"  Last run: {report['last_run_at'] or 'never'}")
+    console.print(f"  Sources: {', '.join(report['configured_sources'])}")
+    if report["missing_sources"]:
+        console.print(f"  Missing: {', '.join(report['missing_sources'])}")
+    console.print(f"  Queries: {report['query_count']}")
+    console.print(f"  Aliases: {report['alias_count']}")
+    console.print(f"  Negative terms: {'yes' if report['has_negative_terms'] else 'no'}")
+    console.print(f"  Owner: {report['governance']['owner'] or 'unset'}")
+    console.print(f"  Unique artifacts seen: {memory['total_unique_artifacts']}")
+    console.print(f"  Recurring: {memory['recurring_artifacts']}")
+    console.print(f"  Novelty ratio: {memory['novelty_ratio']}")
+
+
+@app.command()
+def inspect(
+    artifact_id: str,
+    json_output: Annotated[bool, typer.Option("--json", help="Print JSON output.")] = False,
+) -> None:
+    """Inspect an artifact's full lineage chain."""
+    settings = get_settings()
+    repo = RegistryRepository(settings.db_path)
+    lineage = repo.artifact_lineage(artifact_id)
+    if "error" in lineage:
+        console.print(f"Error: {lineage['error']}")
+        raise typer.Exit(1)
+    if json_output:
+        print_json(lineage)
+        return
+    artifact = lineage["artifact"]
+    console.print(f"Artifact: {artifact['id']}")
+    console.print(f"  Title: {artifact['title']}")
+    console.print(f"  Source: {artifact['source']}")
+    console.print(f"  URL: {artifact.get('url', 'n/a')}")
+    console.print(f"  Collected: {artifact['collected_at']}")
+    console.print(f"  Topic: {artifact['topic_id']} v{artifact['topic_version']}")
+    console.print(f"  Config hash: {artifact['config_hash'][:12]}...")
+    console.print(f"  Run: {artifact['run_id']}")
+    run = lineage.get("run")
+    if run and "error" not in run:
+        console.print(f"  Run status: {run['status']}")
+        console.print(f"  Run artifacts: {run['artifact_count']}")
+
+
 @app.command("version")
 def version_cmd() -> None:
     """Print Sonde version."""

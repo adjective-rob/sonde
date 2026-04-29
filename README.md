@@ -75,6 +75,8 @@ sonde diff <old_config> <new_config> [--json]
 sonde simulate <config> --topic <id> --source <source> [--json]
 sonde run <config> --topic <id> [--source <source>] [--dry-run] [--json]
 sonde status [--json]
+sonde health <config> --topic <id> [--json]
+sonde inspect <artifact_id> [--json]
 sonde export <config> --tag agents --output exports/agents.topicpack.yaml
 sonde mcp --config <config>
 sonde version
@@ -113,6 +115,8 @@ uv run sonde mcp --config examples/topics.ai.yaml --summary
 | `generate_aliases` | Generate query aliases from intent |
 | `generate_negative_terms` | Generate negative terms to reduce noise |
 | `summarize_topic_health` | Health report: yield, noise, staleness, coverage |
+| `apply_diff` | Apply a proposed diff after human review (validates first) |
+| `artifact_memory` | Cross-run artifact memory: unique vs recurring counts |
 
 ### MCP Resources
 
